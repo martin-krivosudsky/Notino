@@ -1,9 +1,9 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, { Component } from 'react';
 
-import FileBrowser, { Icons } from 'react-keyed-file-browser'
+import FileBrowser, { Icons } from 'react-keyed-file-browser';
+import './FileExplorer.css';
 
-export class NestedEditableDemo extends React.Component {
+export class FileExplorer extends Component {
     state = {
         files: [
             {
@@ -152,9 +152,3 @@ export class NestedEditableDemo extends React.Component {
         )
     }
 }
-
-const mount = document.querySelectorAll('div.demo-mount-nested-editable')
-ReactDOM.render(
-    <NestedEditableDemo />,
-    mount[0]
-)
