@@ -8,3 +8,5 @@
 /Notino/Notino.Common/obj
 /Notino/Notino.Data/obj
 /Notino/Notino.Services/obj
+/Notino/.vs/Notino/config
+/Notino/Notino.API/bin/Debug/net5.0
