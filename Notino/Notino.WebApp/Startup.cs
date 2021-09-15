@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +25,7 @@ namespace Notino.WebApp
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "client-app/build";
+                configuration.RootPath = "ClientApp/build";
             });
         }
 
@@ -52,7 +51,7 @@ namespace Notino.WebApp
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "client-app";
+                spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
