@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Notino/.vs/Notino/v16
+/Notino/Notino.API/obj
+/Notino/Notino.Common/obj
+/Notino/Notino.Data/obj
+/Notino/Notino.Services/obj
