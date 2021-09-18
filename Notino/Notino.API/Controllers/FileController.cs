@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Notino.Common;
 using Notino.Common.Models;
 using Notino.Common.Service;
 using System.Threading.Tasks;
@@ -19,20 +19,34 @@ namespace Notino.API.Controllers
 
         [HttpPost]
         [Route("download")]
-        public async Task<IActionResult> DownloadFile([FromQuery] string path)
+        public IActionResult DownloadFile([FromQuery] string path)
         {
+            path = Constants.StoragePath + path;
 
-
-            return Ok();
+            if (_fileService.FileExist(path))
+            {
+                return File(_fileService.GetFile(path), "application/octec-stream");
+            }
+            else
+            {
+                return BadRequest("File does not exist or is not accessible.");
+            }
         }
 
         [HttpPost]
         [Route("upload")]
         public async Task<IActionResult> UploadFromFile([FromForm] FileDto file)
         {
-            await _fileService.SaveFile(file).ConfigureAwait(false);
+            Response response = await _fileService.SaveFile(file).ConfigureAwait(false);
 
-            return Ok();
+            if (response.ResponseCode == ResponseCode.Success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.ErrorMessage);
+            }
         }
 
         [HttpPost]
@@ -53,11 +67,34 @@ namespace Notino.API.Controllers
 
         [HttpPost]
         [Route("uploadfromurl")]
-        public async Task<IActionResult> UploadFromUrl([FromForm] string path)
+        public IActionResult UploadFromUrl([FromQuery] string url, [FromQuery] string fileName, [FromQuery] string filePath)
         {
+            Response response = _fileService.SaveFileFromUrl(url, filePath, fileName);
 
+            if (response.ResponseCode == ResponseCode.Success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.ErrorMessage);
+            }
+        }
 
-            return Ok();
+        [HttpPost]
+        [Route("sendbyemail")]
+        public IActionResult SendByEmail([FromQuery] string filePath, [FromQuery] string email)
+        {
+            Response response = _fileService.SendByEmail(filePath, email);
+
+            if (response.ResponseCode == ResponseCode.Success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.ErrorMessage);
+            }
         }
     }
 }

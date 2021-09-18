@@ -1,11 +1,9 @@
-﻿using Notino.Common.Models;
-using System.Threading.Tasks;
-
-namespace Notino.Data
+﻿namespace Notino.Data
 {
     public interface IFileReader
     {
-        public string Read(string filePath);
-        public string GetFileExtension(string filePath);
+        string ReadText(string filePath);
+        string GetFileExtension(string filePath);
+        byte[] ReadBytes(string filePath);
     }
 }

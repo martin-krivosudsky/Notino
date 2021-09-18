@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using Notino.Common.Models;
+using System.Threading.Tasks;
 
 namespace Notino.Data
 {
     public interface IFileWriter
     {
-        public Task WriteAsync(string folderPath, string fileName, byte[] data, bool createFolders);
+        public Task<Response> WriteAsync(string folderPath, string fileName, byte[] data, bool createFolders);
     }
 }

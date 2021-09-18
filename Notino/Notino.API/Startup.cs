@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Logging.Debug;
 using Microsoft.OpenApi.Models;
 using Notino.Common.Service;
 using Notino.Common.Service.FileConvert;
@@ -37,6 +40,18 @@ namespace Notino.API
             services.AddSingleton<IFileConverter, FileConverter>();
             services.AddSingleton<IConverter, XmlToJsonConverter>();
             services.AddSingleton<IConverter, JsonToXmlConverter>();
+            services.AddSingleton<IMailService, MailService>();
+
+            services.AddLogging(config =>
+            {
+                config.AddDebug();
+                config.AddConsole();
+            })
+            .Configure<LoggerFilterOptions>(options =>
+            {
+                options.AddFilter<DebugLoggerProvider>(null, LogLevel.Information);
+                options.AddFilter<ConsoleLoggerProvider>(null, LogLevel.Warning);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

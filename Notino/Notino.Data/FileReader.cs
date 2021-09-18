@@ -1,6 +1,4 @@
-﻿using Notino.Common.Models;
-using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Notino.Data
 {
@@ -11,9 +9,14 @@ namespace Notino.Data
             return Path.GetExtension(filePath).Remove(0, 1);
         }
 
-        public string Read(string filePath)
+        public string ReadText(string filePath)
         {
             return File.ReadAllText(filePath);
+        }
+
+        public byte[] ReadBytes(string filePath)
+        {
+            return File.ReadAllBytes(filePath);
         }
     }
 }

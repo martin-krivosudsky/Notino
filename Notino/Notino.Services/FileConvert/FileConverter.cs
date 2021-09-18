@@ -31,11 +31,11 @@ namespace Notino.Service.FileConvert
                 return new Response
                 {
                     ResponseCode = ResponseCode.ConversionNotSupported,
-                    ErrorMessage = "Converter from selected to desired file type not found."                    
+                    ErrorMessage = $"Converter from {sourceType} to {desiredType} not found."                    
                 };
             }
 
-            string source = _fileReader.Read(filePath);
+            string source = _fileReader.ReadText(filePath);
 
             string converted = converter.Convert(source);
 
