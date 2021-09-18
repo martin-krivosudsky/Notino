@@ -2,6 +2,7 @@
 using Notino.Common.Models;
 using Notino.Common.Service.FileConvert;
 using Notino.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,25 +18,21 @@ namespace Notino.Service.FileConvert
 
         public FileConverter(IEnumerable<IConverter> converters, IFileReader fileReader, IFileWriter fileWriter)
         {
-            _converters = converters ?? throw new System.ArgumentNullException(nameof(converters));
-            _fileReader = fileReader ?? throw new System.ArgumentNullException(nameof(fileReader));
-            _fileWriter = fileWriter ?? throw new System.ArgumentNullException(nameof(fileWriter));
+            _converters = converters ?? throw new ArgumentNullException(nameof(converters));
+            _fileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
+            _fileWriter = fileWriter ?? throw new ArgumentNullException(nameof(fileWriter));
         }
 
-        public async Task Convert(string filePath, FileType desiredType)
+        public async Task<Response> Convert(string filePath, FileType sourceType, FileType desiredType)
         {
-            FileType sourceType = _fileReader.GetFileType(filePath);
-            if (sourceType == desiredType)
-            {
-                //TODO
-                return;
-            }
-
             IConverter converter = _converters.FirstOrDefault(c => c.IsValid(sourceType, desiredType));
             if (converter == null)
             {
-                //TODO
-                return;
+                return new Response
+                {
+                    ResponseCode = ResponseCode.ConversionNotSupported,
+                    ErrorMessage = "Converter from selected to desired file type not found."                    
+                };
             }
 
             string source = _fileReader.Read(filePath);
@@ -46,6 +43,11 @@ namespace Notino.Service.FileConvert
 
             string newFilePath = FilenameHelper.RenameExtension(filePath, sourceType.ToString().ToLower(), desiredType.ToString().ToLower());
             await _fileWriter.WriteAsync(string.Empty, newFilePath, desiredFile, false).ConfigureAwait(false);
+
+            return new Response
+            {
+                ResponseCode = ResponseCode.Success
+            };
         }
     }
 }

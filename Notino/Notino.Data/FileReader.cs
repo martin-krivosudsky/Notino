@@ -6,11 +6,9 @@ namespace Notino.Data
 {
     public class FileReader : IFileReader
     {
-        public FileType GetFileType(string filePath)
+        public string GetFileExtension(string filePath)
         {
-            string extension = Path.GetExtension(filePath).Remove(0, 1);
-
-            return (FileType)Enum.Parse(typeof(FileType), extension, true);
+            return Path.GetExtension(filePath).Remove(0, 1);
         }
 
         public string Read(string filePath)

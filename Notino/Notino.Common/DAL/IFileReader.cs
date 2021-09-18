@@ -6,6 +6,6 @@ namespace Notino.Data
     public interface IFileReader
     {
         public string Read(string filePath);
-        public FileType GetFileType(string filePath);
+        public string GetFileExtension(string filePath);
     }
 }

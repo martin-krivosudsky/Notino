@@ -5,7 +5,7 @@ namespace Notino.Common.Service
 {
     public interface IFileService
     {
-        Task SaveFile(FileDto file);
-        Task Convert(string filePath, FileType desiredType);
+        public Task SaveFile(FileDto file);
+        public Task<Response> Convert(string filePath, FileType desiredType);
     }
 }

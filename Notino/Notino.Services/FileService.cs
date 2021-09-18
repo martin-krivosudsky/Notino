@@ -3,6 +3,7 @@ using Notino.Common.Models;
 using Notino.Common.Service;
 using Notino.Common.Service.FileConvert;
 using Notino.Data;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace Notino.Services
     public class FileService : IFileService
     {
         private readonly IFileWriter _fileWriter;
+        private readonly IFileReader _fileReader;
         private readonly IFileConverter _fileConverter;
-        public FileService(IFileWriter fileWriter, IFileConverter fileConverter)
+        public FileService(IFileWriter fileWriter, IFileConverter fileConverter, IFileReader fileReader)
         {
             _fileWriter = fileWriter ?? throw new System.ArgumentNullException(nameof(fileWriter));
+            _fileReader = fileReader ?? throw new System.ArgumentNullException(nameof(fileReader));
             _fileConverter = fileConverter ?? throw new System.ArgumentNullException(nameof(fileConverter));
         }
 
@@ -28,9 +31,30 @@ namespace Notino.Services
             await _fileWriter.WriteAsync(folderPath, fileDto.File.FileName, fileBytes, true).ConfigureAwait(false);
         }
 
-        public async Task Convert(string filePath, FileType desiredType)
+        public async Task<Response> Convert(string filePath, FileType desiredType)
         {
-            await _fileConverter.Convert(Constants.StoragePath + filePath, desiredType).ConfigureAwait(false);
+            string fileExtension = _fileReader.GetFileExtension(filePath);
+
+            if (!Enum.IsDefined(typeof(FileType), fileExtension))
+            {
+                return new Response
+                {
+                    ResponseCode = ResponseCode.ConversionNotSupported,
+                    ErrorMessage = "Source file type not recognized."
+                };
+            }
+            FileType sourceType = (FileType)Enum.Parse(typeof(FileType), fileExtension);
+
+            if (sourceType == desiredType)
+            {
+                return new Response
+                {
+                    ResponseCode = ResponseCode.FileAlreadyInDesiredFormat,
+                    ErrorMessage = "File already in desired format."
+                };
+            }
+
+            return await _fileConverter.Convert(Constants.StoragePath + filePath, sourceType, desiredType).ConfigureAwait(false);
         }
     }
 }

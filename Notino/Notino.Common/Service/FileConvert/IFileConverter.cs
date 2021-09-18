@@ -5,6 +5,6 @@ namespace Notino.Common.Service.FileConvert
 {
     public interface IFileConverter
     {
-        public Task Convert(string filePath, FileType desiredType); 
+        public Task<Response> Convert(string filePath, FileType sourceType, FileType desiredType); 
     }
 }

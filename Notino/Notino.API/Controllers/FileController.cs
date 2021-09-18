@@ -39,9 +39,16 @@ namespace Notino.API.Controllers
         [Route("convert")]
         public async Task<IActionResult> Convert([FromQuery] string filePath, [FromQuery] FileType desiredType)
         {
-            await _fileService.Convert(filePath, desiredType).ConfigureAwait(false);
+            Response response = await _fileService.Convert(filePath, desiredType).ConfigureAwait(false);
 
-            return Ok();
+            if (response.ResponseCode == ResponseCode.Success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.ErrorMessage);
+            }
         }
 
         [HttpPost]
