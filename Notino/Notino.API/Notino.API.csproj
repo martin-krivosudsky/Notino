@@ -8,4 +8,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Notino.Common\Notino.Common.csproj" />
+    <ProjectReference Include="..\Notino.Data\Notino.DAL.csproj" />
+    <ProjectReference Include="..\Notino.Services\Notino.Service.csproj" />
+  </ItemGroup>
+
 </Project>

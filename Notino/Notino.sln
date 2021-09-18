@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notino.API", "Notino.API\No
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notino.Common", "Notino.Common\Notino.Common.csproj", "{7A8DD3AB-2BCA-49E7-8633-BCA1395458A7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notino.Services", "Notino.Services\Notino.Services.csproj", "{9AC665C6-FF8E-4029-B3A7-425D8872C19A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notino.Service", "Notino.Services\Notino.Service.csproj", "{9AC665C6-FF8E-4029-B3A7-425D8872C19A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notino.Data", "Notino.Data\Notino.Data.csproj", "{34830CB8-3774-49C5-8544-E2AC11FB2360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notino.DAL", "Notino.Data\Notino.DAL.csproj", "{34830CB8-3774-49C5-8544-E2AC11FB2360}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notino.WebApp", "Notino.WebApp\Notino.WebApp.csproj", "{B6B35BA1-A7DD-4EF0-8A93-915FE875B76D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notino.WebApp", "Notino.WebApp\Notino.WebApp.csproj", "{0F04CD24-27D6-46DE-A3F6-64C37CE50987}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{34830CB8-3774-49C5-8544-E2AC11FB2360}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34830CB8-3774-49C5-8544-E2AC11FB2360}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34830CB8-3774-49C5-8544-E2AC11FB2360}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6B35BA1-A7DD-4EF0-8A93-915FE875B76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6B35BA1-A7DD-4EF0-8A93-915FE875B76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6B35BA1-A7DD-4EF0-8A93-915FE875B76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6B35BA1-A7DD-4EF0-8A93-915FE875B76D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F04CD24-27D6-46DE-A3F6-64C37CE50987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F04CD24-27D6-46DE-A3F6-64C37CE50987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F04CD24-27D6-46DE-A3F6-64C37CE50987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F04CD24-27D6-46DE-A3F6-64C37CE50987}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

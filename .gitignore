@@ -11,3 +11,6 @@
 /Notino/.vs/Notino/config
 /Notino/Notino.API/bin/Debug/net5.0
 /Notino/.vs/Notino/DesignTimeBuild
+/Notino/Notino.Common/bin/Debug/net5.0
+/Notino/Notino.Data/bin/Debug/net5.0
+/Notino/Notino.Services/bin/Debug/net5.0
