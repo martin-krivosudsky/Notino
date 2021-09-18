@@ -1,19 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Notino.Common.Service;
+using Notino.Common.Service.FileConvert;
 using Notino.Data;
+using Notino.Service.FileConvert;
 using Notino.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Notino.API
 {
@@ -37,7 +32,11 @@ namespace Notino.API
             });
 
             services.AddSingleton<IFileWriter, FileWriter>();
+            services.AddSingleton<IFileReader, FileReader>();
             services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IFileConverter, FileConverter>();
+            services.AddSingleton<IConverter, XmlToJsonConverter>();
+            services.AddSingleton<IConverter, JsonToXmlConverter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,6 +4,6 @@ namespace Notino.Data
 {
     public interface IFileWriter
     {
-        public Task WriteAsync(string filePath, byte[] data);
+        public Task WriteAsync(string folderPath, string fileName, byte[] data, bool createFolders);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Notino.Common.Models;
+using Notino.Common.Service;
 using System.Threading.Tasks;
 
 namespace Notino.API.Controllers
@@ -9,14 +10,15 @@ namespace Notino.API.Controllers
     [Route("api/[controller]")]
     public class FileController : ControllerBase
     {
-        private readonly ILogger<FileController> _logger;
+        private readonly IFileService _fileService;
 
-        public FileController(ILogger<FileController> logger)
+        public FileController(IFileService fileService)
         {
-            _logger = logger;
+            _fileService = fileService ?? throw new System.ArgumentNullException(nameof(fileService));
         }
 
         [HttpPost]
+        [Route("download")]
         public async Task<IActionResult> DownloadFile([FromQuery] string path)
         {
 
@@ -25,14 +27,25 @@ namespace Notino.API.Controllers
         }
 
         [HttpPost]
+        [Route("upload")]
         public async Task<IActionResult> UploadFromFile([FromForm] FileDto file)
         {
-
+            await _fileService.SaveFile(file).ConfigureAwait(false);
 
             return Ok();
         }
 
         [HttpPost]
+        [Route("convert")]
+        public async Task<IActionResult> Convert([FromQuery] string filePath, [FromQuery] FileType desiredType)
+        {
+            await _fileService.Convert(filePath, desiredType).ConfigureAwait(false);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("uploadfromurl")]
         public async Task<IActionResult> UploadFromUrl([FromForm] string path)
         {
 
