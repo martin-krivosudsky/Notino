@@ -15,6 +15,11 @@ namespace Notino.Data
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public void Delete(string path)
+        {
+            File.Delete(path);
+        }
+
         public async Task<Response> WriteAsync(string folderPath, string fileName, byte[] data, bool createFolders)
         {
             string filePath = folderPath + fileName;

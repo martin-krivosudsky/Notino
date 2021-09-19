@@ -41,8 +41,8 @@ namespace Notino.Data
                 Common.Models.FileInfo fileInfo = new()
                 {
                     Name = fi.Name,
-                    Path = fi.FullName,
-                    FileType = fi.Extension,
+                    Path = fi.FullName?.Replace(Constants.StoragePath, ""),
+                    FileType = fi.Extension?.Replace(".", "")?.ToUpper(),
                     Size = fi.Length
                 };
                 result.Add(fileInfo);

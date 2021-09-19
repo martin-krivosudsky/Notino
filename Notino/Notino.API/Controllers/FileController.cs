@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Notino.Common;
 using Notino.Common.Models;
+using Notino.Common.Models.DTO;
 using Notino.Common.Service;
 using System.Threading.Tasks;
 
@@ -17,15 +18,33 @@ namespace Notino.API.Controllers
             _fileService = fileService ?? throw new System.ArgumentNullException(nameof(fileService));
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("download")]
-        public IActionResult DownloadFile([FromQuery] string path)
+        public IActionResult Download([FromQuery] string path)
         {
             path = Constants.StoragePath + path;
 
             if (_fileService.FileExist(path))
             {
                 return File(_fileService.GetFile(path), "application/octec-stream");
+            }
+            else
+            {
+                return BadRequest("File does not exist or is not accessible.");
+            }
+        }
+
+        [HttpPost]
+        [Route("delete")]
+        public IActionResult Delete([FromQuery] string path)
+        {
+            path = Constants.StoragePath + path;
+
+            if (_fileService.FileExist(path))
+            {
+
+                _fileService.DeleteFile(path);
+                return Ok();
             }
             else
             {
@@ -51,9 +70,9 @@ namespace Notino.API.Controllers
 
         [HttpPost]
         [Route("convert")]
-        public async Task<IActionResult> Convert([FromQuery] string filePath, [FromQuery] FileType desiredType)
+        public async Task<IActionResult> Convert([FromBody] ConvertDto convertDto)
         {
-            Response response = await _fileService.Convert(filePath, desiredType).ConfigureAwait(false);
+            Response response = await _fileService.Convert(convertDto.FilePath, convertDto.DesiredType).ConfigureAwait(false);
 
             if (response.ResponseCode == ResponseCode.Success)
             {
@@ -66,10 +85,10 @@ namespace Notino.API.Controllers
         }
 
         [HttpPost]
-        [Route("uploadfromurl")]
-        public async Task<IActionResult> UploadFromUrl([FromQuery] string url, [FromQuery] string fileName, [FromQuery] string filePath)
+        [Route("upload-from-url")]
+        public async Task<IActionResult> UploadFromUrl([FromForm] UploadFromFileDto uploadFromFileDto)
         {
-            Response response = await _fileService.SaveFileFromUrl(url, filePath, fileName).ConfigureAwait(false);
+            Response response = await _fileService.SaveFileFromUrl(uploadFromFileDto.Url, uploadFromFileDto.FilePath, uploadFromFileDto.FileName).ConfigureAwait(false);
 
             if (response.ResponseCode == ResponseCode.Success)
             {
@@ -82,10 +101,10 @@ namespace Notino.API.Controllers
         }
 
         [HttpPost]
-        [Route("sendbyemail")]
-        public IActionResult SendByEmail([FromQuery] string filePath, [FromQuery] string email)
+        [Route("send-by-email")]
+        public IActionResult SendByEmail([FromForm] SendByEmailDto sendByEmailDto)
         {
-            Response response = _fileService.SendByEmail(filePath, email);
+            Response response = _fileService.SendByEmail(sendByEmailDto.FilePath, sendByEmailDto.Email);
 
             if (response.ResponseCode == ResponseCode.Success)
             {
@@ -98,7 +117,7 @@ namespace Notino.API.Controllers
         }
 
         [HttpGet]
-        [Route("getallfiles")]
+        [Route("get-all")]
         public IActionResult GetAllFilesInStorage()
         {
             return Ok(_fileService.GetFilesInfo());

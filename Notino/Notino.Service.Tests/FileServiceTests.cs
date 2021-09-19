@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Notino.Common;
 using Notino.Common.Models;
+using Notino.Common.Models.DTO;
 using Notino.Common.Service;
 using Notino.Common.Service.FileConvert;
 using Notino.Data;
@@ -31,6 +32,7 @@ namespace Notino.Service.Tests
         private Mock<ILogger<FileService>> _loggerMock;
 
         private const string _filePath = "folder\\file.xml";
+        private const string _fullFilePath = Constants.StoragePath + "folder\\file.xml";
 
         [SetUp]
         public void Setup()
@@ -83,8 +85,8 @@ namespace Notino.Service.Tests
         [Test]
         public async Task Convert_TryingToConvertUnsupportedFile_ErrorReturned()
         {
-            _fileReaderMock.Setup(fr => fr.FileExists(_filePath)).Returns(true);
-            _fileReaderMock.Setup(fr => fr.GetFileExtension(_filePath)).Returns("pdf");
+            _fileReaderMock.Setup(fr => fr.FileExists(_fullFilePath)).Returns(true);
+            _fileReaderMock.Setup(fr => fr.GetFileExtension(_fullFilePath)).Returns("pdf");
 
             Response response = await _fileService.Convert(_filePath, FileType.Json).ConfigureAwait(false);
 
@@ -95,8 +97,8 @@ namespace Notino.Service.Tests
         [Test]
         public async Task Convert_FileIsAlreadyConverted_ErrorReturned()
         {
-            _fileReaderMock.Setup(fr => fr.FileExists(_filePath)).Returns(true);
-            _fileReaderMock.Setup(fr => fr.GetFileExtension(_filePath)).Returns("xml");
+            _fileReaderMock.Setup(fr => fr.FileExists(_fullFilePath)).Returns(true);
+            _fileReaderMock.Setup(fr => fr.GetFileExtension(_fullFilePath)).Returns("xml");
 
             Response response = await _fileService.Convert(_filePath, FileType.Xml).ConfigureAwait(false);
 
@@ -107,8 +109,8 @@ namespace Notino.Service.Tests
         [Test]
         public async Task Convert_HappyPath_ConverCalled()
         {
-            _fileReaderMock.Setup(fr => fr.FileExists(_filePath)).Returns(true);
-            _fileReaderMock.Setup(fr => fr.GetFileExtension(_filePath)).Returns("xml");
+            _fileReaderMock.Setup(fr => fr.FileExists(_fullFilePath)).Returns(true);
+            _fileReaderMock.Setup(fr => fr.GetFileExtension(_fullFilePath)).Returns("xml");
             _fileConverterMock.Setup(fc => fc.Convert(Constants.StoragePath + _filePath, FileType.Xml, FileType.Json)).ReturnsAsync(new Response {ResponseCode = ResponseCode.Success });
 
             Response response = await _fileService.Convert(_filePath, FileType.Json).ConfigureAwait(false);
@@ -195,6 +197,14 @@ namespace Notino.Service.Tests
             _fileService.FileExist(_filePath);
 
             _fileReaderMock.Verify(fr => fr.FileExists(_filePath), Times.Once);
+        }
+
+        [Test]
+        public void DeleteFile_FileWriterCalled()
+        {
+            _fileService.DeleteFile(_filePath);
+
+            _fileWriterMock.Verify(fr => fr.Delete(_filePath), Times.Once);
         }
 
         [Test]

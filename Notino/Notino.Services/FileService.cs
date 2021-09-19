@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Notino.Common;
 using Notino.Common.Models;
+using Notino.Common.Models.DTO;
 using Notino.Common.Service;
 using Notino.Common.Service.FileConvert;
 using Notino.Data;
@@ -51,6 +52,8 @@ namespace Notino.Services
 
         public async Task<Response> Convert(string filePath, FileType desiredType)
         {
+            filePath = Constants.StoragePath + filePath;
+
             if (!FileExist(filePath))
             {
                 return new Response
@@ -80,7 +83,7 @@ namespace Notino.Services
                 };
             }
 
-            return await _fileConverter.Convert(Constants.StoragePath + filePath, sourceType, desiredType).ConfigureAwait(false);
+            return await _fileConverter.Convert(filePath, sourceType, desiredType).ConfigureAwait(false);
         }
 
         public async Task<Response> SaveFileFromUrl(string url, string filePath, string fileName)
@@ -168,6 +171,11 @@ namespace Notino.Services
 
                 return Enumerable.Empty<Common.Models.FileInfo>();
             }            
+        }
+
+        public void DeleteFile(string path)
+        {
+            _fileWriter.Delete(path);
         }
     }
 }

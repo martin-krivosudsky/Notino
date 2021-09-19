@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Notino.Common.Models
+namespace Notino.Common.Models.DTO
 {
     public class FileDto
     {

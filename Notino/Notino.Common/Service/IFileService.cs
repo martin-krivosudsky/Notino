@@ -1,4 +1,5 @@
 ﻿using Notino.Common.Models;
+using Notino.Common.Models.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,5 +14,6 @@ namespace Notino.Common.Service
         Task<Response> SaveFileFromUrl(string url, string filePath, string fileName);
         Response SendByEmail(string filePath, string email);
         IEnumerable<FileInfo> GetFilesInfo();
+        void DeleteFile(string path);
     }
 }
