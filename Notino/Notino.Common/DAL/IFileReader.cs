@@ -1,4 +1,7 @@
-﻿namespace Notino.Data
+﻿using Notino.Common.Models;
+using System.Collections.Generic;
+
+namespace Notino.Data
 {
     public interface IFileReader
     {
@@ -7,5 +10,6 @@
         byte[] ReadBytes(string filePath);
         bool FileExists(string filePath);
         string GetFileName(string filePath);
+        IEnumerable<FileInfo> GetFilesInfo();
     }
 }

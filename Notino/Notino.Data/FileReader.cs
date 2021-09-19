@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using Notino.Common;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Notino.Data
 {
@@ -27,6 +29,26 @@ namespace Notino.Data
         public string GetFileName(string filePath)
         {
             return Path.GetFileName(filePath);
+        }
+
+        public IEnumerable<Common.Models.FileInfo> GetFilesInfo()
+        {
+            var result = new List<Common.Models.FileInfo>();
+
+            foreach (string file in Directory.EnumerateFiles(Constants.StoragePath, "*.*", SearchOption.AllDirectories))
+            {
+                FileInfo fi = new(file);
+                Common.Models.FileInfo fileInfo = new()
+                {
+                    Name = fi.Name,
+                    Path = fi.FullName,
+                    FileType = fi.Extension,
+                    Size = fi.Length
+                };
+                result.Add(fileInfo);
+            }
+
+            return result;
         }
     }
 }

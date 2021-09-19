@@ -96,5 +96,12 @@ namespace Notino.API.Controllers
                 return BadRequest(response.ErrorMessage);
             }
         }
+
+        [HttpGet]
+        [Route("getallfiles")]
+        public IActionResult GetAllFilesInStorage()
+        {
+            return Ok(_fileService.GetFilesInfo());
+        }
     }
 }

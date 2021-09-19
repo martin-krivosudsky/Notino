@@ -5,7 +5,9 @@ using Notino.Common.Service;
 using Notino.Common.Service.FileConvert;
 using Notino.Data;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Notino.Services
@@ -152,6 +154,20 @@ namespace Notino.Services
             {
                 ResponseCode = ResponseCode.Success
             };
+        }
+
+        public IEnumerable<Common.Models.FileInfo> GetFilesInfo()
+        {
+            try
+            {
+                return _fileReader.GetFilesInfo();
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, "Something went wrong when reading files.");
+
+                return Enumerable.Empty<Common.Models.FileInfo>();
+            }            
         }
     }
 }

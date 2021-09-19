@@ -10,6 +10,7 @@ using Notino.Data;
 using Notino.Services;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -157,6 +158,35 @@ namespace Notino.Service.Tests
             _fileService.GetFile(_filePath);
 
             _fileReaderMock.Verify(fr => fr.ReadBytes(_filePath), Times.Once);
+        }
+
+        [Test]
+        public void GetFilesInfo_FileReaderCalled()
+        {
+            _fileService.GetFilesInfo();
+
+            _fileReaderMock.Verify(fr => fr.GetFilesInfo(), Times.Once);
+        }
+
+        [Test]
+        public void GetFilesInfo_ExceptionThrown_EmptyListReturned()
+        {
+            IOException exception = new();
+
+            _fileReaderMock.Setup(fr => fr.GetFilesInfo()).Throws(exception);
+
+            IEnumerable<Common.Models.FileInfo> filesInfo = _fileService.GetFilesInfo();
+
+            _fileReaderMock.Verify(fr => fr.GetFilesInfo(), Times.Once);
+            _loggerMock.Verify(
+                x => x.Log(
+                    LogLevel.Error,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((o, t) => string.Equals("Something went wrong when reading files.", o.ToString(), StringComparison.InvariantCultureIgnoreCase)),
+                    exception,
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                Times.Once);
+            Assert.IsEmpty(filesInfo);
         }
 
         [Test]

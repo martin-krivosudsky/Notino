@@ -1,4 +1,5 @@
 ﻿using Notino.Common.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Notino.Common.Service
@@ -11,5 +12,6 @@ namespace Notino.Common.Service
         bool FileExist(string filePath);
         Task<Response> SaveFileFromUrl(string url, string filePath, string fileName);
         Response SendByEmail(string filePath, string email);
+        IEnumerable<FileInfo> GetFilesInfo();
     }
 }
