@@ -67,9 +67,9 @@ namespace Notino.API.Controllers
 
         [HttpPost]
         [Route("uploadfromurl")]
-        public IActionResult UploadFromUrl([FromQuery] string url, [FromQuery] string fileName, [FromQuery] string filePath)
+        public async Task<IActionResult> UploadFromUrl([FromQuery] string url, [FromQuery] string fileName, [FromQuery] string filePath)
         {
-            Response response = _fileService.SaveFileFromUrl(url, filePath, fileName);
+            Response response = await _fileService.SaveFileFromUrl(url, filePath, fileName).ConfigureAwait(false);
 
             if (response.ResponseCode == ResponseCode.Success)
             {

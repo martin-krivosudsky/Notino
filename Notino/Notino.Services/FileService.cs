@@ -6,7 +6,6 @@ using Notino.Common.Service.FileConvert;
 using Notino.Data;
 using System;
 using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Notino.Services
@@ -17,7 +16,7 @@ namespace Notino.Services
         private readonly IFileReader _fileReader;
         private readonly IFileConverter _fileConverter;
         private readonly IMailService _mailService;
-        private readonly WebClient _webClient;
+        private readonly IWebService _webService;
         private readonly ILogger<FileService> _logger;
 
         public FileService(
@@ -25,14 +24,16 @@ namespace Notino.Services
             IFileConverter fileConverter,
             IFileReader fileReader,
             IMailService mailService,
+            IWebService webService,
             ILogger<FileService> logger)
         {
             _fileWriter = fileWriter ?? throw new ArgumentNullException(nameof(fileWriter));
             _fileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
             _fileConverter = fileConverter ?? throw new ArgumentNullException(nameof(fileConverter));
             _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
+            _webService = webService ?? throw new ArgumentNullException(nameof(webService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _webClient = new WebClient();
+       
         }
 
         public async Task<Response> SaveFile(FileDto fileDto)
@@ -80,13 +81,13 @@ namespace Notino.Services
             return await _fileConverter.Convert(Constants.StoragePath + filePath, sourceType, desiredType).ConfigureAwait(false);
         }
 
-        public Response SaveFileFromUrl(string url, string filePath, string fileName)
+        public async Task<Response> SaveFileFromUrl(string url, string filePath, string fileName)
         {
             byte[] data;
 
             try
             {
-                data = _webClient.DownloadData(url);
+                data = _webService.DownloadFile(url);
             }
             catch (Exception e)
             {
@@ -99,7 +100,7 @@ namespace Notino.Services
                 };
             }
 
-            _fileWriter.WriteAsync(Constants.StoragePath + filePath, fileName, data, true);
+            await _fileWriter.WriteAsync(Constants.StoragePath + filePath, fileName, data, true).ConfigureAwait(false);
 
             return new Response
             {
@@ -114,11 +115,13 @@ namespace Notino.Services
 
         public bool FileExist(string filePath)
         {
-            return File.Exists(filePath);
+            return _fileReader.FileExists(filePath);
         }
 
         public Response SendByEmail(string filePath, string email)
         {
+            filePath = Constants.StoragePath + filePath;
+
             if (!FileExist(filePath))
             {
                 return new Response
@@ -132,7 +135,7 @@ namespace Notino.Services
 
             try
             {
-                _mailService.SendMail(email, file, Path.GetFileName(filePath));
+                _mailService.SendMail(email, file, _fileReader.GetFileName(filePath));
             }
             catch(Exception e)
             {

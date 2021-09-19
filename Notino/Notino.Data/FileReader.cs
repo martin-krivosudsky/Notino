@@ -18,5 +18,15 @@ namespace Notino.Data
         {
             return File.ReadAllBytes(filePath);
         }
+
+        public bool FileExists(string filePath)
+        {
+            return File.Exists(filePath);
+        }
+
+        public string GetFileName(string filePath)
+        {
+            return Path.GetFileName(filePath);
+        }
     }
 }

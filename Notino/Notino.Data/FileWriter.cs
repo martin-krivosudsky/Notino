@@ -17,6 +17,17 @@ namespace Notino.Data
 
         public async Task<Response> WriteAsync(string folderPath, string fileName, byte[] data, bool createFolders)
         {
+            string filePath = folderPath + fileName;
+
+            if(File.Exists(filePath))
+            {
+                return new Response
+                {
+                    ResponseCode = ResponseCode.FileAlreadyExists,
+                    ErrorMessage = "File with that name already exists."
+                };
+            }
+
             try
             {
                 if (createFolders)
@@ -24,8 +35,8 @@ namespace Notino.Data
                     Directory.CreateDirectory(folderPath);
                 }
 
-                using (FileStream sourceStream = new(folderPath + fileName,
-                    FileMode.Create, FileAccess.Write, FileShare.None,
+                using (FileStream sourceStream = new(filePath,
+                    FileMode.CreateNew, FileAccess.Write, FileShare.None,
                     bufferSize: 4096, useAsync: true))
                 {
                     await sourceStream.WriteAsync(data.AsMemory(0, data.Length)).ConfigureAwait(false);

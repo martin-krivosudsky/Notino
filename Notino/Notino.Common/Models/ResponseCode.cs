@@ -10,6 +10,7 @@
         FileAlreadyInDesiredFormat = 5,
         ErrorWhileWritingToFile = 6,
         HttpError = 7,
-        MailError = 8
+        MailError = 8,
+        FileAlreadyExists = 9
     }
 }

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notino.DAL", "Notino.Data\N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notino.WebApp", "Notino.WebApp\Notino.WebApp.csproj", "{0F04CD24-27D6-46DE-A3F6-64C37CE50987}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notino.Service.Tests", "Notino.Service.Tests\Notino.Service.Tests.csproj", "{EA2ABF81-416B-4F2F-96AF-6F01364E622B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0F04CD24-27D6-46DE-A3F6-64C37CE50987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F04CD24-27D6-46DE-A3F6-64C37CE50987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F04CD24-27D6-46DE-A3F6-64C37CE50987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA2ABF81-416B-4F2F-96AF-6F01364E622B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA2ABF81-416B-4F2F-96AF-6F01364E622B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA2ABF81-416B-4F2F-96AF-6F01364E622B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA2ABF81-416B-4F2F-96AF-6F01364E622B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

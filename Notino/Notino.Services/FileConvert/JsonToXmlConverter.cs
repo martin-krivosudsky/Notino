@@ -12,8 +12,8 @@ namespace Notino.Service.FileConvert
         {
             XmlDocument xml = JsonConvert.DeserializeXmlNode(source);
 
-            using StringWriter stringWriter = new StringWriter();
-            using XmlTextWriter textWriter = new XmlTextWriter(stringWriter);
+            using StringWriter stringWriter = new();
+            using XmlTextWriter textWriter = new(stringWriter);
             xml.WriteTo(textWriter);
             string xmlString = stringWriter.ToString();
             return xmlString;

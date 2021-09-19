@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Notino.Common.Service;
 using Notino.Common.Service.FileConvert;
 using Notino.Data;
+using Notino.Service;
 using Notino.Service.FileConvert;
 using Notino.Services;
 
@@ -41,6 +42,7 @@ namespace Notino.API
             services.AddSingleton<IConverter, XmlToJsonConverter>();
             services.AddSingleton<IConverter, JsonToXmlConverter>();
             services.AddSingleton<IMailService, MailService>();
+            services.AddSingleton<IWebService, WebService>();
 
             services.AddLogging(config =>
             {
